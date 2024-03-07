@@ -14,6 +14,9 @@ deque подключаем только тогда, когда есть огра
 
 // Коллекции языка с++. Требования к вложенным типам и особенности работы
 
+#include<queue> // очередь FIFO (первый пришёл, первый вышел)
+#include<stack> // очередь FILO (первый пришёл, последний вышел)
+
 class DemoGood{ // Класс для демонстрации коллекций (в публичной зоне класса ОБЯЗАТЕЛЬНО должны быть все конструкторы, которыми \
 	мы будем пользоваться, иначе стандартные коллекции с++ работать не будут!!!)
 public:
@@ -30,6 +33,7 @@ public:
 	~DemoGood() { // Дэструктор
 		std::cout << this << " destroyed\n";
 	}
+	int var;
 };
 
 class DemoBad { // Класс для плохой демонстрации коллекций (конструктор по умолчанию удалим)
@@ -47,7 +51,7 @@ public:
 	}
 };
 
-int main() {
+int main_Old() {
 	std::array<DemoGood, 10> arrST; // Создаём объект arrST класса DemoGood, который является статическим массивом размером 10 элементов \
 	размер указывать обязательно
 	// std::vector<DemoGood> arrDin(10); // Создаём объект arrDin класса DemoGood, который является динамическим массивом из 10 элементов \
@@ -93,6 +97,43 @@ int main() {
 		push_back нормально пользоваться, если объект класса уже есть! Если объект класса ещё не создан, т.е. есть только его исходные данные, \
 	// то push_back отработает раза в три медленее, чем emplace_back
 	}
+
+	return 0;
+}
+
+#include<list>
+#include<fstream>
+
+int main() {
+	/*std::stack<DemoGood, std::list<DemoGood>> qwe;
+	struct { int i; DemoGood tmp; } obj; // Третий вариант
+	{ // Вынос в локальную область видимости для того, чтобы переменная tmp создавалась и уничтожалась только один раз
+		DemoGood tmp; // первый вариант, второй вариант - создание tmp в цикле for
+		for (int i = 0; i < 7; ++i) {
+		//for (struct {int i;DemoGood tmp;}obj; obj.i<7;obj.i++) // третий вариант
+			tmp.var = i;
+			qwe.push(tmp);
+		}
+	}
+
+	for (int i = 0; i < 7; ++i) {
+		std::cout << qwe.top().var << ' ';
+		qwe.pop();
+	}*/
+	std::string path = "names.txt";
+	std::string text;
+	std::ifstream in; // Объект для чтения информации из файла
+	in.open(path, std::ios::in); // Открываем файл для чтения
+	if (in.is_open()) {
+		std::cout << "\nThe file is open for reading.\n";		
+		char symbol;
+		while (in.get(symbol))
+			text += symbol;
+	}
+	else
+		std::cout << "\033[94mError opening file!\033[0m\n";
+	std::cout << text << std::endl;
+
 
 	return 0;
 }
